@@ -3,10 +3,15 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start:frontend": "cd frontend && npm run dev",
+    "start:backend": "cd backend && nodemon server.ts",
+    "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
 }
