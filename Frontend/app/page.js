@@ -1,12 +1,17 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import SearchBar from "./components/SearchBar";
+import { CartContext } from "./components/contexts/cartContext";
+import Link from "next/link";
 
 export default function Home() {
   const [sort, setSort] = useState(true); // true is for low to high
   const [searching, setSearching] = useState(false);
   const [products, setProducts] = useState([]);
   const [searchResult, setSearchResult] = useState([]);
+  const [showNotification, setShowNotification] = useState(false);
+
+  const { dispatch } = useContext(CartContext);
 
   useEffect(() => {
     const findData = async () => {
@@ -37,9 +42,23 @@ export default function Home() {
     }
   }, [searchResult]);
 
+  const handleAddToCart = (product) => {
+    dispatch({ type: "ADD_TO_CART", payload: product });
+    setShowNotification(true);
+    setTimeout(() => setShowNotification(false), 3000); // Hide notification after 3 seconds
+  };
+
   return (
     <main className="p-5">
       <h1 className="text-3xl font-bold mb-5">Welcome to our store</h1>
+      <Link href={"/cart"}>
+        <span className="text-blue-500 hover:text-blue-700">Go to cart</span>
+      </Link>
+      {showNotification && (
+        <div className="fixed top-0 right-0 mt-4 mr-4 z-50 bg-green-500 text-white py-2 px-4 rounded">
+          Added to cart!
+        </div>
+      )}
       <div className="flex justify-around text-black my-4">
         <SearchBar
           setSearching={setSearching}
@@ -73,6 +92,12 @@ export default function Home() {
               <p className="text-lg font-bold text-green-400">
                 ${prod.price.toFixed(2)}
               </p>
+              <button
+                onClick={() => handleAddToCart(prod)}
+                className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+              >
+                Add to Cart
+              </button>
             </div>
           </div>
         ))}
