@@ -10,14 +10,16 @@ export default function Home() {
   const [products, setProducts] = useState([]);
   const [searchResult, setSearchResult] = useState([]);
   const [showNotification, setShowNotification] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   const { dispatch } = useContext(CartContext);
 
   useEffect(() => {
     const findData = async () => {
+      setLoading(true);
       const response = await fetch("http://localhost:8000/getAll");
       const data = await response.json();
       setProducts(data);
+      setLoading(false);
     };
     findData();
   }, []);
@@ -75,32 +77,38 @@ export default function Home() {
         </button>
       </div>
       <section className="grid px-10 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {products.map((prod) => (
-          <div key={prod.id} className="bg-white shadow-lg rounded-lg">
-            <div className="relative w-full h-64 overflow-hidden">
-              <img
-                src={prod.imageUrl}
-                alt={prod.name}
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="p-4">
-              <h2 className="text-xl text-blue-500 font-bold mb-2">
-                {prod.name}
-              </h2>
-              <p className="text-gray-600 mb-2">{prod.description}</p>
-              <p className="text-lg font-bold text-green-400">
-                ${prod.price.toFixed(2)}
-              </p>
-              <button
-                onClick={() => handleAddToCart(prod)}
-                className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-              >
-                Add to Cart
-              </button>
-            </div>
+        {loading && (
+          <div className=" flex text-center text-2xl text-green-600">
+            Loading...
           </div>
-        ))}
+        )}
+        {!loading &&
+          products.map((prod) => (
+            <div key={prod.id} className="bg-white shadow-lg rounded-lg">
+              <div className="relative w-full h-64 overflow-hidden">
+                <img
+                  src={prod.imageUrl}
+                  alt={prod.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="p-4">
+                <h2 className="text-xl text-blue-500 font-bold mb-2">
+                  {prod.name}
+                </h2>
+                <p className="text-gray-600 mb-2">{prod.description}</p>
+                <p className="text-lg font-bold text-green-400">
+                  ${prod.price.toFixed(2)}
+                </p>
+                <button
+                  onClick={() => handleAddToCart(prod)}
+                  className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          ))}
       </section>
     </main>
   );
