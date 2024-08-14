@@ -24,7 +24,7 @@ This is a simple e-commerce product listing page built using Next.js, Tailwind C
 
    ```
    URI=mongodb://your-mongodb-connection-string
-   PORT = 8000
+   PORT=8000
    ```
 
 4. **Start the development server:**
@@ -42,37 +42,33 @@ This is a simple e-commerce product listing page built using Next.js, Tailwind C
 - **`server.ts`:** Entry point for the Node.js server. It imports the Express app, connects to the database, and starts the server.
 - **`app/page.js`:** The main page component, responsible for fetching and displaying product data.
 - **`components/SearchBar.jsx`:** Component for searching products by name or description.
+- **`components/Cart.jsx`:** Component for displaying and managing the shopping cart.
+- **`components/CartContext.js`:** Provides a context for managing cart state across the application.
 
 ## Design Decisions
 
 - **Next.js:** Chosen for its easy template setup and server-side rendering capabilities, which improve SEO and initial loading performance.
 - **Tailwind CSS:** Used for its utility-first approach, making styling efficient and maintainable.
-- **Express.js:** It is minimal and flexible for building web applications and APIs with middleware support and easy routing.
-- **MongoDB:** It offers a flexible, schema-less data model that aligns with JavaScript’s JSON format, making it easy to integrate, manage, and scale in real-time applications with high performance and scalability.
+- **Express.js:** A minimal and flexible framework for building web applications and APIs with middleware support and easy routing.
+- **MongoDB:** Offers a flexible, schema-less data model that aligns with JavaScript’s JSON format, making it easy to integrate, manage, and scale in real-time applications with high performance and scalability.
 
 ## Challenges
 
-- **Implementing real-time search:** Initially, the search function was not updating the product list instantly. This was resolved by using `useEffect` to fetch and update the products whenever the search input changed.
+- **Implementing real-time search:** The search function was made to update the product list instantly using `useEffect` to fetch and update the products whenever the search input changed.
 - **Sorting products:** Implementing sorting functionality required careful handling of state and ensuring that the product list was updated correctly.
+- **Cart Management with `useReducer`, `useContext`, and `localStorage`:**
+  - **State Management Complexity:** Combining `useReducer` for managing complex cart state changes with `useContext` for global state access, while also synchronizing with `localStorage` for persistence, introduced a significant level of complexity.
 
 ## Future Improvements
 
-- **Cloud Storge:** Currently images are taken dummy, we could implement cloud based soltions to efficeintly store images and files
+- **Cloud Storage:** Currently images are taken dummy, we could implement cloud-based solutions to efficiently store images and files.
 - **Pagination:** Implement pagination to handle large product lists efficiently.
 - **Filtering:** Allow users to filter products by category, price range, etc.
 - **User authentication:** Add user accounts and shopping cart functionality.
 - **Improved styling:** Enhance the visual design and user experience.
 - **Testing:** Write unit and integration tests to ensure code quality and prevent regressions.
 
-```
-
-```
-
-```
-
-```
-
-**I would deploy the application to aws ec2 by doing:**
+## Deployment to AWS EC2
 
 1. **Launch two EC2 instances:** One for the frontend and one for the backend.
 2. **Securely connect to each instance using SSH.**
@@ -89,3 +85,7 @@ This is a simple e-commerce product listing page built using Next.js, Tailwind C
    - Build the frontend for production (`npm run build`).
    - Configure Nginx to serve the built frontend application.
    - **Crucially, update the frontend's API endpoint to point to the private IP address of the backend instance.**
+
+```
+
+```
